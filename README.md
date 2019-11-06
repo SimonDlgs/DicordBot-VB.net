@@ -36,7 +36,7 @@
 • WebSocket4Net
 
 ## The bot can :
-### Connect to an Discord Server
+► Connect to an Discord Server
 
 ## The bot need :
-# Detect new message
+► Detect new message
