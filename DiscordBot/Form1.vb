@@ -34,7 +34,7 @@ Public Class Form1
     Dim wClient As New System.Net.WebClient
     Dim trigger As String = "!"
     Dim uptime As Integer = 0
-    Dim admins() As String = {"Simon (SKE TV)", "Kevin (SKE TV)", "Emilio (SKE TV)"}
+    Dim admins() As String = {"Admin 1", "Admin 2)", "Admin 3"}
     Dim singles() As String = {"help", "info"}
     Dim doubles() As String = {"test1", "test2"}
 
@@ -50,7 +50,7 @@ Public Class Form1
     End Sub 'Start button
 
     Public Async Sub StartBot()
-        Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Démarrage du client en cours...")
+        Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Starting the bot...")
         Try
             Me.StatueImageDiscordServers.Image = My.Resources.loading
 
@@ -60,40 +60,40 @@ Public Class Form1
                                             .MessageCacheSize = 50
             })
 
-            Await discord.LoginAsync(TokenType.Bot, "NjM5MTk0OTI3NTY1MzczNDUx.XcBw2A.X_fQMJTgma10QVtxyIzBmw8HC6M")
+            Await discord.LoginAsync(TokenType.Bot, "TOKEN HERE")
             Await discord.StartAsync()
             Await Task.Delay(500)
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Client connecté à Discord !")
+            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Connected to Discord !")
             Me.RichTextBox1.SelectionColor = System.Drawing.Color.Gray
             Me.RichTextBox1.SelectionFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* Client connecté à Discord.")
+            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* Connected to Discord.")
             Me.RichTextBox1.SelectionColor = System.Drawing.Color.Black
             Me.RichTextBox1.SelectionFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.StatueImageDiscordServers.Image = My.Resources.ok
             Me.Button2.Visible = False
             Me.Button3.Visible = True
         Catch ex As Exception
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERREUR ! Un problème est survenue. (" & ex.Message & ")")
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Arrêt de la procédure d'exécution.")
+            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERROR ! Exception catched. (" & ex.Message & ")")
+            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Starting stopped.")
             Me.StatueImageDiscordServers.Image = My.Resources.notok
         End Try
 
     End Sub
     Private Async Function Onmsg(message As SocketMessage) As Task
         If message.Source = MessageSource.Bot Then
-            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* Jaina parle.")
+            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* Jaina speak.")
         Else
-            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* Un utilisateur parle.")
+            Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "* An user speak.")
             Dim userMessage As String = message.Content.ToString()
             Dim senderMessage As String = message.Author.Username.ToLower()
-            Me.RichTextBox1.AppendText(vbCrLf & message.Author.Username & " dit : " & userMessage)
+            Me.RichTextBox1.AppendText(vbCrLf & message.Author.Username & " say : " & userMessage)
 
-            If userMessage.StartsWith(trigger) Then 'Si c'est une commande
+            If userMessage.StartsWith(trigger) Then 'If it's an command
                 If userMessage.Contains(" ") Then
                     Dim cmd As String = userMessage.Split(trigger)(1).Split(" ")(0)
                     Dim arg As String = userMessage.Split(" ")(1)
-                    If singles.Contains(cmd) Then 'Si la commande ne requiert pas de valeur
-                        Await message.Channel.SendMessageAsync("La commande de requiert aucune valeur.")
+                    If singles.Contains(cmd) Then 'If the command don't need an value
+                        Await message.Channel.SendMessageAsync("This command don't need value.")
                     Else
                         Select Case cmd.ToLower
                             Case "ping"
@@ -104,19 +104,19 @@ Public Class Form1
                                 Await DirectCast(message.Author, SocketGuildUser).KickAsync()
                             Case "ban"
                                 Await DirectCast(message.Channel, IGuildChannel).Guild.AddBanAsync(message.MentionedUsers.FirstOrDefault)
-                            Case "blague"
+                        Case "joke"
                                 Me.RichTextBox1.SelectionColor = System.Drawing.Color.Gray
                                 Me.RichTextBox1.SelectionFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-                                Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "#" & message.Channel.Name & " | " & "* Récupération de la blague...")
+                                Me.RichTextBox1.AppendText(vbCrLf & "[" & Date.Now & "] " & "#" & message.Channel.Name & " | " & "* Getting the joke...")
                                 Me.RichTextBox1.SelectionColor = System.Drawing.Color.Black
                                 Me.RichTextBox1.SelectionFont = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-                                Dim result As String = wClient.DownloadString("http://chez-simon.io/elements/bot/joke.php")
+                                Dim result As String = wClient.DownloadString("http://chez-simon.io/elements/bot/joke.php") 'Source of the joke (Randome joke in PHP)
                                 Await message.Channel.SendMessageAsync(result)
                                 Await Task.Delay(1000)
                         End Select
                     End If
                 End If
-            Else 'Si ce n'est pas une commande
+            Else 'If it's not an command
                 ' « BOB ! DO SOMETHING »
             End If
         End If
@@ -130,7 +130,7 @@ Public Class Form1
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
 
     End Sub
-#End Region 'Design de l'application
+    #End Region 'App design
 
 #Region "AppWorking"
     Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged
@@ -139,14 +139,14 @@ Public Class Form1
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Déconnexion du client...")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Disconnection of the bot...")
             discord.StopAsync()
             Me.Button2.Visible = True
             Me.Button3.Visible = False
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Client déconnecté !")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Bot disconnected!")
         Catch ex As Exception
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERREUR ! Un problème est survenue. (" & ex.Message & ")")
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Impossible de déconnecter le client.")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERROR ! An exception happend. (" & ex.Message & ")")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Impossible to disconnect the bot.")
         End Try
         Me.Timer1.Stop()
     End Sub
@@ -163,16 +163,16 @@ Public Class Form1
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Try
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Déconnexion du client...")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Disconnecting the bot...")
             discord.StopAsync()
             Me.Button2.Visible = True
             Me.Button3.Visible = False
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Client déconnecté !")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "Bot disconnected !")
         Catch ex As Exception
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERREUR ! Un problème est survenue. (" & ex.Message & ")")
-            Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Impossible de déconnecter le client.")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> ERROR ! An exception happend. (" & ex.Message & ")")
+    Me.TextBox2.AppendText(vbCrLf & "[" & Date.Now & "] " & "> Impossible to disconnect the bot.")
         End Try
     End Sub
-#End Region 'Fonctionnement de l'application (Hors réseau)
+#End Region 'App Working (Without Network)
 
 End Class
