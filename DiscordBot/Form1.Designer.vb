@@ -92,7 +92,7 @@ Partial Class Form1
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(63, 20)
         Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Envoyer"
+        Me.Button1.Text = "Send"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'ComboBox1
@@ -222,7 +222,7 @@ Partial Class Form1
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(118, 23)
         Me.Button2.TabIndex = 0
-        Me.Button2.Text = "Démarrer"
+        Me.Button2.Text = "Start"
         Me.Button2.UseVisualStyleBackColor = False
         '
         'TabControl1
@@ -255,7 +255,7 @@ Partial Class Form1
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(515, 517)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Activités des utilisateurs"
+        Me.TabPage2.Text = "Users activity"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'RichTextBox1
@@ -334,7 +334,7 @@ Partial Class Form1
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(118, 23)
         Me.Button3.TabIndex = 8
-        Me.Button3.Text = "Déconnecter"
+        Me.Button3.Text = "Stop"
         Me.Button3.UseVisualStyleBackColor = False
         '
         'Form1
